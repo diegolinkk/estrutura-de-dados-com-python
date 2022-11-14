@@ -32,6 +32,16 @@ class LinkedList:
     def set(self,index,elem):
         #lista.set(5,1)
         pass
+
+    def _getnode(self,index):
+        pointer = self.head
+        for i in range(index):
+            if pointer:
+                pointer = pointer.next
+            else:
+                raise  IndexError("List index out of range")
+        return pointer
+
     
     #método especial do Python que permite usar o [] como uma lista
     def __getitem__(self,index):
@@ -39,13 +49,7 @@ class LinkedList:
         #esse método é conhecido de "sobrecarga de operador"
         """Aqui ele vai percorer x vezes elementos dentro de um laço e caso esse elemento existir, retorna um dado, caso contrário, retorna um erro"""
 
-        pointer = self.head
-        for i in range(index):
-            #se o pointer não for None, posso avançar
-            if pointer:
-                pointer = pointer.next
-            else:
-                raise IndexError("list index out of range")
+        pointer = self._getnode(index)
         
         if pointer:
             #se houver o elemento, retorna o valor
@@ -58,12 +62,7 @@ class LinkedList:
     def __setitem__(self,index,elem):
         #lista[5] = 15
 
-        pointer = self.head
-        for i in range(index):
-            if pointer:
-                pointer = pointer.next
-            else:
-                raise IndexError("list index out of range")
+        pointer = self._getnode(index)
         
         if pointer:
             #diferente da função anterior, aqui teve que colocar um else, pq ele não retorna um valor, então acaba executando a linha seguinte
@@ -83,3 +82,48 @@ class LinkedList:
         raise ValueError("{} is not in list".format(elem))
 
 
+    def insert(self,index,elem):
+        """insere um elemento no index especificado"""
+        node = Node(elem)
+        if index == 0:
+            node.next = self.head
+            self.head = node
+        else:
+            pointer = self._getnode(index -1)
+            node.next = pointer.next
+            pointer.next = node
+        self._size = self._size + 1
+
+
+    def remove(self,elem):
+        if self.head == None:
+            raise ValueError("{} is not in list".format(elem))
+        elif self.head.data == elem:
+            self.head = self.head.next
+            self._size = self._size -1
+            return True
+        else:
+            ancestor = self.head
+            pointer = self.head.next
+            while(pointer):
+                if pointer.data == elem:
+                    ancestor.next = pointer.next
+                    pointer.next = None
+                    pass
+                ancestor = pointer
+                pointer = pointer.next
+            self._size = self._size -1
+            return True
+        
+    def __repr__(self):
+        r = ""
+        pointer = self.head
+        while(pointer):
+            r = r + str(pointer.data)
+            pointer = pointer.next
+            if pointer:
+                r = r + "->"
+        return r
+    
+    def __str__(self):
+        return self.__repr__()
