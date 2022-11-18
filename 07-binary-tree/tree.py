@@ -17,7 +17,7 @@ class BinaryTree:
         else:
             self.root = None
 
-    #percurso em ordem simétrica
+    #percurso em ordem simétrica (inorder em inglês)
     def simetric_traversal(self, node = None):
         if node is None:
             node = self.root
@@ -28,9 +28,34 @@ class BinaryTree:
         if node.right:
             self.simetric_traversal(node.right)
             print(')',end='')
-        
+    
+    def postorder_traversal(self, node=None):
+        if node is None:
+            node = self.root
+        if node.left:
+            self.postorder_traversal(node.left)
+        if node.right:
+            self.postorder_traversal(node.right)
 
-if __name__ == "__main__":
+        print(node.data)
+    
+    def height(self, node = None):
+        """calcula a altura da árvore"""
+        if node is None:
+            node = self.root
+        
+        hleft = 0
+        hright = 0
+        if node.left:
+            hleft = self.height(node.left)
+        if node.right:
+            hright = self.height(node.right)
+
+        if hright > hleft:
+            return hright + 1
+        return hleft + 1
+
+        
 #     #exemplo simples de implantação
 #     tree = BinaryTree(7)
 #     tree.root.left = Node(18)
@@ -38,26 +63,3 @@ if __name__ == "__main__":
 #     print(tree.root)
 #     print(tree.root.right)
 #     print(tree.root.left)
-
-    tree = BinaryTree()
-    n1 = Node('a')
-    n2 = Node('+')
-    n3 = Node('*')
-    n4 = Node('b')
-    n5 = Node('-')
-    n6 = Node('/')
-    n7 = Node('e')
-    n8 = Node('c')
-    n9 = Node('d')
-
-    tree.root = n2
-    n2.left = n1
-    n2.right = n3
-    n3.left = n4
-    n3.right = n5
-    n5.left = n6
-    n5.right = n7
-    n6.left = n8
-    n6.right = n9
-
-    tree.simetric_traversal()
