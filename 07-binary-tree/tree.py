@@ -1,3 +1,6 @@
+from queue import Queue
+
+ROOT = "root"
 class Node:
     def __init__(self, data):
         self.data = data
@@ -39,6 +42,20 @@ class BinaryTree:
 
         print(node.data)
     
+    def levelorder_traversal(self, node = ROOT):
+        if node == ROOT:
+            node = self.root
+        
+        queue = Queue()
+        queue.push(node)
+        while len(queue):
+            node = queue.pop()
+            if node.left:
+                queue.push(node.left) 
+            if node.right:
+                queue.push(node.right)  
+            print(node, end= " ")
+            
     def height(self, node = None):
         """calcula a altura da árvore"""
         if node is None:
@@ -54,6 +71,8 @@ class BinaryTree:
         if hright > hleft:
             return hright + 1
         return hleft + 1
+    
+    
 
         
 #     #exemplo simples de implantação
